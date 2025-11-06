@@ -11,7 +11,7 @@
 </head>
 <body>
     <header>
-        <img src="img/name_logo.png" alt="">
+        <img src="img/name_logo.png" alt="logo_tiendamon">
         <nav>
             <ul>
                 <a href="index.html">
@@ -58,26 +58,6 @@
 
                 let productos = data.payload //// Acá guardamos en la variable productos el array de productos que contiene "payload"
 
-
-                /*
-                {
-                    "id": 1,
-                    "nombre": "prod1",
-                    "precio": 2000,
-                    "tipo": "",
-                    "img_url": "https://unsplash.com/es/s/fotos/img",
-                    "activo": 0
-                    },
-                    {
-                    "id": 2,
-                    "nombre": "prod2",
-                    "precio": 200,
-                    "tipo": "CATEGORIA_2",
-                    "img_url": "https://stanleypm.vtexassets.com/arquivos/ids/159696-150-auto?v=638755909297270000&width=150&height=auto&aspect=true",
-                    "activo": 0
-                    },
-
-                */
                 // console.table(productos);
 
                 mostrarProductos(productos);
@@ -96,7 +76,7 @@
             array.forEach(producto=> {
                 htmlProducto += `
                     <div class= "card-producto">
-                        <img src="${producto.img}" alt="${producto.nombre}"  width="150" height="150">
+                        <img src="${producto.img}" alt="${producto.nombre}">
                         <h3>Nombre: ${producto.nombre}<h4>
                         <p>Id:${producto.id}</p>
                         <p>precio: $${producto.precio}</p>
