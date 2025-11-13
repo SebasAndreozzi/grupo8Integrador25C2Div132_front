@@ -9,6 +9,7 @@
 body {
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     background-color:var(--blanco); /* Fondo blanco */
+    width: 50%;
     margin: 0 auto;
     padding: 0;
     color: #000000;
@@ -23,6 +24,7 @@ header {
     text-align: center;
     position: relative;
     border-bottom: 10px solid #000000;
+    width: 100%;
 }
 
 header nav ul {
@@ -31,6 +33,7 @@ header nav ul {
     list-style: none; /*elimina los marcadores li*/
     padding: 0;
     margin: 0;
+    width: 100%;
     /* gap: 20px; espaciado entre filas y columnas en diseños de cuadrícula */
 }
 
@@ -45,7 +48,6 @@ header nav ul a {
     padding: 10px 15px;
     border-radius: 360px;
     transition: 0.3s;
-    font-size: larger;
 }
 
 header nav ul a:hover {
@@ -74,6 +76,7 @@ main {
     background-color: var(--blanco);
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 main h1 {
@@ -140,10 +143,47 @@ input, label{
     background-color: var(--azul);
     color: var(--blanco);
     margin-top: 15px;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: medium;
 }
 
-ul .button{
-    margin-top: 0;
+.button:hover{
+    background-color: #63afff;
+    cursor: pointer;
+}
+
+
+
+.productos-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: flex-start;
+    padding: 0;
+}
+
+.productos-form input{
+    width: 90%;
+    height: 25px;
+    border-radius: 5px;
+    padding-left: 5px;
+    font-size: medium;
+}
+
+.productos-form select{
+    width: 91.25%;
+    height: 35px;
+    border-radius: 5px;
+    margin: 0;
+    padding: 0;
+    font-size: medium;
+}
+
+.productos-form .button{
+    width: 25%;
+    height: initial;
 }
 
 /*
