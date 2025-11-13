@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/bamboo.css" type="text/css">
     <title>Tiendamon</title>
     <link rel="icon" href="img/favicon.ico">
     <link rel="stylesheet" href="css/styles.css">
@@ -33,12 +32,12 @@
     </header>
     <main>
         <h1>Crear producto</h1>
-        <form id="altaProducto-form">
+        <form id="altaProducto-form" class="productos-form">
             <label for="nameProd">Nombre: </label>
             <input id="nameProd" name="name" type="text" required>
 
-            <label for="imgProd">Imágen: </label>
-            <input id="imgProd" name="img" type="text" required>
+            <label for="priceProd">Precio: </label>
+            <input id="priceProd" name="price" type="number" required>
 
             <label for="categoryProd">Categoría: </label>
             <select id="categoryProd" name="category" required>
@@ -46,8 +45,8 @@
                 <option value="Accesorio">Accesorio</option>
             </select>
 
-            <label for="priceProd">Precio: </label>
-            <input id="priceProd" name="price" type="number" required>
+            <label for="imgProd">Imágen: </label>
+            <input id="imgProd" name="img" type="text" required>
 
             <input class="button" type="submit" value="Crear Producto">
         </form>
