@@ -186,6 +186,18 @@ input, label{
     height: initial;
 }
 
+.mensaje-error strong {
+    color: #ae4f4e;
+}
+
+.mensaje-error {
+    color: #a94442;
+    background-color: #f2dede;
+    border: 2px solid #ebccd1;
+    padding: 10px 30px;
+    border-radius: 4px;
+    font-size: 16px;
+}
 /*
 /* Toque Pokémon en las cards (agregar un ícono pequeño) 
 .card-producto::after {

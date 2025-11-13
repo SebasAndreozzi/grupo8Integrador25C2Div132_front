@@ -70,7 +70,10 @@
                 // Proceso los datos que me devuelve el servidor
                 let datos = await response.json();
                 console.log(datos);
-
+                if (!response.ok) {
+                    mostrarError(datos.message || "No se pudo obtener el producto");
+                    return;
+                }
                 // Extraigo el producto que devuelve payload
                 let producto = datos.payload[0]; // Apuntamos a la respuesta, vamos a payload que trae el array con el objeto y extraemos el primer y unico elemento
 
@@ -96,6 +99,16 @@
                 `;
 
             listado_productos.innerHTML = htmlProducto;
+        }
+        function mostrarError(message) {
+        listado_productos.innerHTML = `
+            <li class="mensaje-error">
+                <p>
+                    <strong>Error:</strong>
+                    <span>${message}</span>
+                </p>
+            </li>
+            `;
         }
     </script>
     
