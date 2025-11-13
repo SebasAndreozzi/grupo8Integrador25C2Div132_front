@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/bamboo.css" type="text/css">
-    <title>Dashboard</title>
+    <title>Tiendamon</title>
     <link rel="icon" href="img/favicon.ico">
     <link rel="stylesheet" href="css/styles.css">
 
@@ -12,10 +12,10 @@
 <body>
     <header>
         <nav>
-            <img src="img/name_logo.png" alt="Tiendamon">
+            <a href="index.html"><img src="img/name_logo.png" alt="Tiendamon"></a>
             <ul>
                 <a href="index.html">
-                    <li>Ver</li>
+                    <li>Inicio</li>
                 </a>
                 <a href="consultar.html">
                     <li>Consultar id</li>
@@ -29,6 +29,10 @@
                 <a href="eliminar.html">
                     <li>Eliminar</li>
                 </a>
+            </ul>
+            <ul class="nav-tipo">
+                <li>Sellado</li>
+                <li>Accesorios</li>
             </ul>
         </nav>
     </header>
@@ -44,7 +48,7 @@
         // Seleccionamos el elemento al que le vamos a inyectar el HTML
 
         let contenedorProductos = document.getElementById("contenedor-productos");
-        const url = "http://localhost:3000/productos"
+        const url = "http://localhost:3000/api/productos"
         
         async function obtenerProductos()
         {
@@ -73,8 +77,8 @@
                     <div class= "card-producto">
                         <img src="${producto.img}" alt="${producto.nombre}"  width="150" height="150">
                         <h3>${producto.nombre}<h4>
-                        <p>Id:${producto.id}</p>
                         <p>$${producto.precio}</p>
+                        <input class="button" type="button" id="idProducto" value="Agregar al carrito">
                     </div>
                 `;
 
