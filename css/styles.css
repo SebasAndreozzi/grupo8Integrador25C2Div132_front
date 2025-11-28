@@ -9,10 +9,10 @@
 body {
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     background-color:var(--blanco); /* Fondo blanco */
-    width: 50%;
-    margin: 0 auto;
+    margin: 0;
     padding: 0;
     color: #000000;
+    width: 100%;
 }
 
 /* Header Pokémon */
@@ -30,19 +30,16 @@ header {
 header nav ul {
     display: flex;
     justify-content: space-evenly;
-    list-style: none; /*elimina los marcadores li*/
+    list-style: none;
     padding: 0;
     margin: 0;
     width: 100%;
-    /* gap: 20px; espaciado entre filas y columnas en diseños de cuadrícula */
 }
+
 
 header nav ul li {
     display: inline;
-}
-
-header nav ul a {
-    color:var(--blanco); /* blanco secundario */
+    color:var(--blanco);
     text-decoration: none;
     font-weight: bold;
     padding: 10px 15px;
@@ -50,14 +47,36 @@ header nav ul a {
     transition: 0.3s;
 }
 
-header nav ul a:hover {
-    color: #ffcb08; /* Amarillo dorado al hover */
+header nav ul li:hover {
+    color: #ffcb08;
     text-decoration: none;
+    cursor: pointer;
 }
 
-.nav-tipo li:hover{
-    text-decoration: underline;
-    color: #e2ba65;
+.nav-img{
+    display: flex;
+    justify-content:flex-end;
+    align-items:flex-start;
+    flex-direction: row;
+
+    margin: 0;
+    padding: 0;
+}
+
+.nav-img span{
+    flex-grow: 1;
+    margin-right: -50px;
+}
+
+.img-carrito{
+    width: 50px;
+    height: 50px;
+
+    margin: 0;
+    margin-right: 50px;
+    padding: 0;
+}
+.img-carrito:hover{
     cursor: pointer;
 }
 
@@ -123,6 +142,14 @@ input, label{
 
 .card-producto:hover {
     transform: scale(1.05);
+}
+
+.card-producto img{
+    height: 150px;
+    width: 150px;
+    padding: 10px;
+    margin: 0;
+    margin-bottom: 5px;
 }
 
 #listado-productos .card-producto:hover{
