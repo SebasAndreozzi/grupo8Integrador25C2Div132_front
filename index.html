@@ -11,27 +11,14 @@
 <body>
     <header>
         <nav>
-            <a href="index.html"><img src="img/name_logo.png" alt="Tiendamon"></a>
+            <div class="nav-img">
+                <span><a href="index.html"><img src="img/name_logo.png" alt="Tiendamon"></a></span>
+                <img src="img/cart2.png" alt="carrito" class="img-carrito" id="carrito">
+            </div>
+            
             <ul>
-                <a href="index.html">
-                    <li>Inicio</li>
-                </a>
-                <a href="consultar.html">
-                    <li>Consultar id</li>
-                </a>
-                <a href="crear.html">
-                    <li>Crear</li>
-                </a>
-                <a href="modificar.html">
-                    <li>Modificar</li>
-                </a>
-                <a href="eliminar.html">
-                    <li>Eliminar</li>
-                </a>
-            </ul>
-            <ul class="nav-tipo">
-                <li>Sellado</li>
-                <li>Accesorios</li>
+                <li type="submit" id="filtro-sellado">Sellado</li>
+                <li type="submit" id="filtro-accesorio">Accesorio</li>
             </ul>
         </nav>
     </header>
@@ -41,56 +28,9 @@
         <h1>Lista de productos</h1>
         <hr>
         <div id="contenedor-productos"></div>
+        <div id="contenedor-carrito"></div>
     </main>
-
-    <script>
-        // Seleccionamos el elemento al que le vamos a inyectar el HTML
-
-        let contenedorProductos = document.getElementById("contenedor-productos");
-        const url = "http://localhost:3000/api/productos"
-        
-        async function obtenerProductos()
-        {
-            try{
-                let respuesta =  await fetch(url)
-
-                let data = await respuesta.json();
-
-                let productos = data.payload;
-
-                mostrarProductos(productos);
-
-            }
-            catch(error){
-                console.log(error);
-            }
-        }
-        function mostrarProductos(array)
-        {
-            console.table(array); //recibimos correctamente en formate tabla los productos q nos manda la funcion obtenerPorductos()
-
-            let htmlProducto ="";
-
-            array.forEach(producto=> {
-                htmlProducto += `
-                    <div class= "card-producto">
-                        <img src="${producto.img}" alt="${producto.nombre}"  width="150" height="150">
-                        <h3>${producto.nombre}<h4>
-                        <p>$${producto.precio}</p>
-                        <input class="button" type="button" id="idProducto" value="Agregar al carrito">
-                    </div>
-                `;
-
-            });
-            contenedorProductos.innerHTML = htmlProducto;
-        }
-
-        function init() {
-            obtenerProductos();
-        }
-
-        init();
-    </script>
+    <script src="js/index.js"></script>
 </body>
 </html>
 
