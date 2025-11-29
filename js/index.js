@@ -37,12 +37,14 @@ function mostrarProductos(array)
                 <img src="${producto.img}" alt="${producto.nombre}">
                 <h3>${producto.nombre}</h3>
                 <p>$${producto.precio}</p>
-                <button class="button" data-producto='${JSON.stringify(producto)}' onclick="agregarACarrito(this.dataset.producto)">Agregar al carrito</button>
+                <input type="number" min="1" id="cantidad${producto.id}" value="1">
+                <button class="button" data-producto='${JSON.stringify(producto)}' onclick="agregarACarrito(this.dataset.producto, document.getElementById('cantidad${producto.id}').value)">Agregar al carrito</button>
             </div>
         `;
 
     });
     contenedorProductos.innerHTML = htmlProducto;
+
 }
 
 /*===================
@@ -119,9 +121,13 @@ function actualizarCantidadCarrito(){
     contadorCarrito.innerHTML = `${carrito.length}`;
 }
 
-function agregarACarrito(producto){ 
-    carrito.push(producto);
+function agregarACarrito(producto, cantidad){
+    for(let i=0; i < cantidad; i++){
+        carrito.push(producto);
+    }
+
     actualizarCantidadCarrito();
+    
     if(contenedorCarrito.innerHTML.trim() != ''){
         mostrarCarrito();
     }
