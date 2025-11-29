@@ -216,3 +216,38 @@ main h1 {
     border-radius: 4px;
     font-size: 16px;
 }
+
+@media screen and (max-width: 730px) {
+    .integrantes{
+        font-size: x-small;
+    }
+    .categorias{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-left: 0;
+        padding: 0;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .logo{
+        margin-top: 60px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    body{
+        font-size: smaller;
+    }
+    h1{
+        font-size: small;
+    }
+    .logo{
+        width: 250px;
+    }
+    .img-carrito{
+        height: 40px;
+        width: 40px;
+    }
+}
