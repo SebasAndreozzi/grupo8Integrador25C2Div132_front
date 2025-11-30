@@ -38,7 +38,7 @@ function mostrarProductos(array)
                 <h3>${producto.nombre}</h3>
                 <p>$${producto.precio}</p>
                 <div class="card-button">
-                    <input type="number" min="1" id="cantidad${producto.id}" value="1">
+                    <input type="number" class="contador-unidades" min="1" id="cantidad${producto.id}" value="1">
                     <button class="button" data-producto='${JSON.stringify(producto)}' onclick="agregarACarrito(this.dataset.producto, document.getElementById('cantidad${producto.id}').value)">Agregar</button>
                 </div>
             </div>
@@ -74,7 +74,7 @@ function filtrarPorTipo(array, tipo){
                     <img src="${producto.img}" alt="${producto.nombre}">
                     <h3>${producto.nombre}</h3>
                     <p>$${producto.precio}</p>
-                    <input type="number" min="1" id="cantidad${producto.id}" value="1">
+                    <input type="number" class="contador-unidades" min="1" id="cantidad${producto.id}" value="1">
                     <button class="button" data-producto='${JSON.stringify(producto)}' onclick="agregarACarrito(this.dataset.producto, document.getElementById('cantidad${producto.id}').value)">Agregar</button>
                 </div>
             `;
@@ -97,20 +97,22 @@ function mostrarCarrito(){
 
     let htmlCarrito ="";
 
-    carrito.forEach((producto, i)=> {
+    carrito.forEach((producto)=> {
 
-        for(let j = 0; j < producto.cantidad; j++){
-            htmlCarrito += `
-                <div class= "card-producto">
-                    <img src="${producto.img}" alt="${producto.nombre}">
-                    <h3>${producto.nombre}</h3>
-                    <p>$${producto.precio}</p>
-                    <button class="button" onclick="eliminarElemento(${i})">Eliminar</button>
-                </div>
-            `;
-        }
+        htmlCarrito += `
+            <div class= "card-producto">
+                <img src="${producto.img}" alt="${producto.nombre}">
+                <h3>${producto.nombre}</h3>
+                <p>$${Number(producto.precio)*Number(producto.cantidad)}</p>
+                <button class="button" onclick="restarUnidad(${producto.id})">-</button>
+                <input type="number" min="0" class="contador-unidades" id="carritoCantidad${producto.id}" value="${producto.cantidad}" disabled>
+                <button class="button" onclick="agregarUnidad(${producto.id})">+</button>
+            </div>
+        `;
  
     });
+
+    //actualizarCarrito(${producto.id}, document.getElementById('carritoCantidad${producto.id}').value)
 
     htmlCarrito += `<button class=button>Finalizar compra</button>`
 
@@ -118,6 +120,16 @@ function mostrarCarrito(){
         contenedorCarrito.innerHTML = htmlCarrito;
     }
 
+}
+
+function actualizarCarrito(id, cant){
+    for(let item in carrito){
+        if(item.id == id){
+            item.cantidad = cant;
+            break;
+        }
+    }
+    mostrarCarrito();
 }
 
 function actualizarCantidadCarrito(){
@@ -162,16 +174,38 @@ function agregarACarrito(producto, cant){
     }
 }
 
-function restarUnidadAlCarrito(id){
-    carrito.splice(indice, 1);
+function agregarUnidad(prodId){
+    for(let item of carrito){
+        if(item.id === prodId){
+            console.log("Hola")
+            item.cantidad = Number(item.cantidad) + 1;
+            break; 
+        }
+    }
     actualizarCantidadCarrito();
-
+    actualizarCarrito()
+    mostrarCarrito();
+}
+function restarUnidad(prodId){
+    for(let item of carrito){
+        if(item.id === prodId){
+            console.log("Hola")
+            item.cantidad = Number(item.cantidad) - 1;
+            if(item.cantidad === 0){
+                carrito.splice(carrito.indexOf(item), 1)
+            }
+            break; 
+        }
+    }
+    actualizarCantidadCarrito();
     if(carrito.length === 0){
         vaciarCarrito();
-
     }else{
+        actualizarCantidadCarrito();
+        actualizarCarrito();
         mostrarCarrito();
     }
+    
 }
 
 function vaciarCarrito(){

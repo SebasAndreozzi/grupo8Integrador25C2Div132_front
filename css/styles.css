@@ -199,7 +199,7 @@ main h1 {
     margin-top: 20px;
 }
 
-.card-button input{
+.contador-unidades{
     border: 2px solid var(--azul);
     border-radius: 5px;
     padding: 10px 10px;
@@ -214,8 +214,6 @@ main h1 {
     border: none;
     border-radius: 5px;
     font-size: medium;
-    height: 39px;
-    width: 80px;
 }
 
 .button:hover{
