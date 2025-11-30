@@ -176,29 +176,46 @@ main h1 {
 .card-producto img{
     height: 150px;
     width: 150px;
-    padding: 10px;
     margin: 0;
-    margin-bottom: 5px;
+    
 }
 
 .card-producto h3 {
     color: var(--azul); /* Azul */
-    margin: 10px 0;
+    margin: 15px 0;
 }
 
 .card-producto p {
     color: #333;
     font-weight: bold;
+    margin: 5px 0;
+}
+
+.card-button{
+    display: flex;
+    align-items: baseline;
+    justify-content: space-evenly;
+    flex-direction: row;
+    margin-top: 20px;
+}
+
+.card-button input{
+    border: 2px solid var(--azul);
+    border-radius: 5px;
+    padding: 10px 10px;
+    margin: 0;
+    width: 56px;
 }
 
 .button{
     background-color: var(--azul);
     color: var(--blanco);
-    margin-top: 15px;
     padding: 10px 10px;
     border: none;
     border-radius: 5px;
     font-size: medium;
+    height: 39px;
+    width: 80px;
 }
 
 .button:hover{
@@ -255,5 +272,10 @@ main h1 {
     #img-carrito{
         height: 40px;
         width: 40px;
+    }
+    .card-button{
+        flex-direction: column;
+        align-items: center;
+        row-gap: 10px;
     }
 }

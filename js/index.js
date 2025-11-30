@@ -37,8 +37,10 @@ function mostrarProductos(array)
                 <img src="${producto.img}" alt="${producto.nombre}">
                 <h3>${producto.nombre}</h3>
                 <p>$${producto.precio}</p>
-                <input type="number" min="1" id="cantidad${producto.id}" value="1">
-                <button class="button" data-producto='${JSON.stringify(producto)}' onclick="agregarACarrito(this.dataset.producto, document.getElementById('cantidad${producto.id}').value)">Agregar al carrito</button>
+                <div class="card-button">
+                    <input type="number" min="1" id="cantidad${producto.id}" value="1">
+                    <button class="button" data-producto='${JSON.stringify(producto)}' onclick="agregarACarrito(this.dataset.producto, document.getElementById('cantidad${producto.id}').value)">Agregar</button>
+                </div>
             </div>
         `;
 
@@ -72,7 +74,8 @@ function filtrarPorTipo(array, tipo){
                     <img src="${producto.img}" alt="${producto.nombre}">
                     <h3>${producto.nombre}</h3>
                     <p>$${producto.precio}</p>
-                    <button class="button" data-producto='${JSON.stringify(producto)}' onclick="agregarACarrito(this.dataset.producto)">Agregar al carrito</button>
+                    <input type="number" min="1" id="cantidad${producto.id}" value="1">
+                    <button class="button" data-producto='${JSON.stringify(producto)}' onclick="agregarACarrito(this.dataset.producto, document.getElementById('cantidad${producto.id}').value)">Agregar</button>
                 </div>
             `;
         }
@@ -95,16 +98,18 @@ function mostrarCarrito(){
     let htmlCarrito ="";
 
     carrito.forEach((producto, i)=> {
-        let prod = JSON.parse(producto);
 
-        htmlCarrito += `
-            <div class= "card-producto">
-                <img src="${prod.img}" alt="${prod.nombre}">
-                <h3>${prod.nombre}</h3>
-                <p>$${prod.precio}</p>
-                <button class="button" onclick="eliminarElemento(${i})">Eliminar</button>
-            </div>
-        `; 
+        for(let j = 0; j < producto.cantidad; j++){
+            htmlCarrito += `
+                <div class= "card-producto">
+                    <img src="${producto.img}" alt="${producto.nombre}">
+                    <h3>${producto.nombre}</h3>
+                    <p>$${producto.precio}</p>
+                    <button class="button" onclick="eliminarElemento(${i})">Eliminar</button>
+                </div>
+            `;
+        }
+ 
     });
 
     htmlCarrito += `<button class=button>Finalizar compra</button>`
@@ -117,13 +122,37 @@ function mostrarCarrito(){
 
 function actualizarCantidadCarrito(){
     let contadorCarrito = document.getElementById("contador-carrito");
+
+    let total = 0;
+
+    if(carrito.length > 0){
+        carrito.forEach((item) => {
+            total += Number(item.cantidad);
+        })
+    }
     
-    contadorCarrito.innerHTML = `${carrito.length}`;
+    contadorCarrito.innerHTML = `${total}`;
 }
 
-function agregarACarrito(producto, cantidad){
-    for(let i=0; i < cantidad; i++){
-        carrito.push(producto);
+function agregarACarrito(producto, cant){
+    agregarProd = JSON.parse(producto);
+    agregarProd.cantidad = cant;
+
+    if(carrito.length > 0){
+        for(let item of carrito){
+            if(item.id === agregarProd.id){
+                item.cantidad = Number(item.cantidad) + Number(cant);
+                break;
+            }
+            else{
+                carrito.push(agregarProd);
+                break;
+            }
+        } 
+
+    }else{
+        carrito.push(agregarProd);
+
     }
 
     actualizarCantidadCarrito();
@@ -133,7 +162,7 @@ function agregarACarrito(producto, cantidad){
     }
 }
 
-function eliminarElemento(indice){
+function restarUnidadAlCarrito(id){
     carrito.splice(indice, 1);
     actualizarCantidadCarrito();
 
