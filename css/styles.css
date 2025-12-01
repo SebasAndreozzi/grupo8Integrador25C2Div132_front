@@ -139,7 +139,7 @@ main h1 {
     margin: 0 auto;
 }
 
-.catalogo-productos hr{
+.separador{
     border: 1px solid var(--rojo); /* rojo secundario */
     width: 100%;
 }
@@ -147,7 +147,7 @@ main h1 {
 /*===============================
    Empieza contenedor-productos
 =================================*/
-#contenedor-productos {
+#contenedor-productos, .contenedor-carrito {
     display: flex;
     justify-content:center;
     align-items: center;
@@ -221,6 +221,20 @@ main h1 {
     cursor: pointer;
 }
 
+#catalogo-carrito{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.total{
+    color: red;
+    font-weight: bold;
+    align-self: flex-end;
+}
 /*===============
    TERMINA MAIN
 =================*/

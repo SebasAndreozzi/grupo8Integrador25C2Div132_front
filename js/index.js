@@ -1,17 +1,7 @@
 let contenedorProductos = document.getElementById("contenedor-productos");
-let contenedorCarrito = document.getElementById("contenedor-carrito")
+let catalogoCarrito = document.getElementById("catalogo-carrito")
 let carrito = [];
 let usrNombre = obtenerNombre();
-
-function obtenerNombre(){
-    if(localStorage.getItem("nombre")){
-        return localStorage.getItem("nombre");
-    }
-    else{
-      window.location.href = "./login.html";  
-    }
-
-}
 
 async function obtenerProductos(){
     try {
@@ -100,6 +90,24 @@ function filtrarPorTipo(array, tipo){
     contenedorProductos.innerHTML = htmlProducto;
 }
 
+/*=========================================================
+Funciones de obtención y eliminación del nombre de usuario
+===========================================================*/
+
+function obtenerNombre(){
+    if(localStorage.getItem("nombre")){
+        return localStorage.getItem("nombre");
+    }
+    else{
+      window.location.href = "./login.html";  
+    }
+
+}
+/*
+window.addEventListener("beforeunload", () =>{
+    localStorage.removeItem("nombre");
+})*/
+
 /*====================
 Funcines de carrito
 =====================*/
@@ -111,7 +119,10 @@ imgCarrito.addEventListener("click", () =>{
 
 function mostrarCarrito(){
 
-    let htmlCarrito ="";
+    let htmlCarrito =`
+        <h1>Carrito</h1>
+        <hr class="separador">
+        <div class="contenedor-carrito">`;
 
     carrito.forEach((producto)=> {
 
@@ -128,10 +139,10 @@ function mostrarCarrito(){
  
     });
 
-    htmlCarrito += `<button class=button>Finalizar compra</button>`
+    htmlCarrito += `</div><p class="total">TOTAL: $${calcularTotal()}</p><button class=button onclick="finalizarCompra()">Finalizar compra</button>`
 
     if(carrito.length > 0){
-        contenedorCarrito.innerHTML = htmlCarrito;
+        catalogoCarrito.innerHTML = htmlCarrito;
     }
 
 }
@@ -183,7 +194,7 @@ function agregarACarrito(producto, cant){
 
     actualizarCantidadCarrito();
     
-    if(contenedorCarrito.innerHTML.trim() != ''){
+    if(catalogoCarrito.innerHTML.trim() != ''){
         mostrarCarrito();
     }
 }
@@ -191,7 +202,6 @@ function agregarACarrito(producto, cant){
 function agregarUnidad(prodId){
     for(let item of carrito){
         if(item.id === prodId){
-            console.log("Hola")
             item.cantidad = Number(item.cantidad) + 1;
             break; 
         }
@@ -204,7 +214,6 @@ function agregarUnidad(prodId){
 function restarUnidad(prodId){
     for(let item of carrito){
         if(item.id === prodId){
-            console.log("Hola")
             item.cantidad = Number(item.cantidad) - 1;
             if(item.cantidad === 0){
                 carrito.splice(carrito.indexOf(item), 1)
@@ -225,7 +234,24 @@ function restarUnidad(prodId){
 
 function vaciarCarrito(){
     carrito = [];
-    contenedorCarrito.innerHTML = "";
+    catalogoCarrito.innerHTML = "";
+}
+
+function calcularTotal(){
+    total = 0;
+
+    carrito.forEach((item) => {
+        total += Number(item.precio) * Number(item.cantidad);
+    })
+
+    console.log(total);
+    return total;
+}
+
+function finalizarCompra(){
+    if(confirm("Desea confirmar la compra")){
+        calcularTotal();
+    }
 }
 
 /*==============================
