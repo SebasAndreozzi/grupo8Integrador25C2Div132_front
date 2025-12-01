@@ -1,6 +1,17 @@
 let contenedorProductos = document.getElementById("contenedor-productos");
 let contenedorCarrito = document.getElementById("contenedor-carrito")
 let carrito = [];
+let usrNombre = obtenerNombre();
+
+function obtenerNombre(){
+    if(localStorage.getItem("nombre")){
+        return localStorage.getItem("nombre");
+    }
+    else{
+      window.location.href = "./login.html";  
+    }
+
+}
 
 async function obtenerProductos(){
     try {
@@ -53,6 +64,11 @@ function mostrarProductos(array)
 Funcines de filtro
 ====================*/
 function iniciarFiltros(array){
+    let todos = document.getElementById("logo");
+    todos.addEventListener("click", () =>{
+        mostrarProductos(array)
+    })
+
     let sellado = document.getElementById("filtro-sellado");
     sellado.addEventListener("click", () =>{
         filtrarPorTipo(array, sellado.textContent);
@@ -111,8 +127,6 @@ function mostrarCarrito(){
         `;
  
     });
-
-    //actualizarCarrito(${producto.id}, document.getElementById('carritoCantidad${producto.id}').value)
 
     htmlCarrito += `<button class=button>Finalizar compra</button>`
 
@@ -186,6 +200,7 @@ function agregarUnidad(prodId){
     actualizarCarrito()
     mostrarCarrito();
 }
+
 function restarUnidad(prodId){
     for(let item of carrito){
         if(item.id === prodId){

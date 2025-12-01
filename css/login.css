@@ -1,0 +1,62 @@
+:root{
+    --azul: #007bff;
+    --blanco: #fff;
+    --rojo: #ff021b;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url(../img/loginBackground2.jpg);
+    background-repeat: no-repeat;
+    background-position:top;
+    background-size: 100% 100vh;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: var(--azul);
+}
+
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    
+}
+
+.logo{
+    width: 300px;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+
+#usrNameForm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+}
+
+#usrNameForm input{
+    padding: 10px 10px;
+    border: 2px solid var(--azul);
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+#usrNameForm button{
+    padding: 10px 10px;
+    border: 2px solid var(--azul);
+    border-radius: 5px;
+    color: var(--blanco);
+    background-color: var(--azul);
+}
