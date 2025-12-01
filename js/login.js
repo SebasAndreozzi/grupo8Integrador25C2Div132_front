@@ -5,7 +5,6 @@ usrNameForm.addEventListener("submit", event => {
     event.preventDefault();
 
     let usrName = document.getElementById("usrName");
-    console.log(typeof usrName.value)
 
     if (validarNombre(usrName.value)){
         localStorage.setItem("nombre", usrName.value);
@@ -15,7 +14,8 @@ usrNameForm.addEventListener("submit", event => {
 })
 
 function validarNombre(nombre){
-    if(typeof nombre !== typeof "String"){
+    if(String(nombre).length <= 0){
+        alert("Debe ingresar su nombre.");
         return false;
     }
     else{

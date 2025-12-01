@@ -60,3 +60,7 @@ main{
     color: var(--blanco);
     background-color: var(--azul);
 }
+
+#usrNameForm button:hover{
+    cursor: pointer;
+}
