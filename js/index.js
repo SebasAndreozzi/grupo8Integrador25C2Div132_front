@@ -180,6 +180,7 @@ function actualizarCarrito(id, cant){
             break;
         }
     }
+    actualizarCantidadCarrito()
     mostrarCarrito();
 }
 
@@ -250,11 +251,10 @@ function restarUnidad(prodId){
             break; 
         }
     }
-    actualizarCantidadCarrito();
+    
     if(carrito.length === 0){
         vaciarCarrito();
     }else{
-        actualizarCantidadCarrito();
         actualizarCarrito();
         mostrarCarrito();
     }
@@ -264,6 +264,7 @@ function restarUnidad(prodId){
 function vaciarCarrito(){
     carrito = [];
     catalogoCarrito.innerHTML = "";
+    actualizarCantidadCarrito();
 }
 
 async function calcularTotal(){
@@ -276,12 +277,6 @@ async function calcularTotal(){
 
     return total;
 }
-/*
-function finalizarCompra(){
-    if(confirm("Desea confirmar la compra")){
-        calcularTotal();
-    }
-}*/
 
 async function finalizarCompra() {
     if (confirm("¿Desea confirmar la compra?")) {
