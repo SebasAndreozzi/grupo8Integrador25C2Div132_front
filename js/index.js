@@ -283,33 +283,40 @@ function finalizarCompra(){
     }
 }*/
 
-async function finalizarCompra(event) {
-    event.preventDefault();
+async function finalizarCompra() {
+    if (confirm("¿Desea confirmar la compra?")) {
+        let url = "http://localhost:3000/api/ventas";
 
-    let url= "http://localhost:3000/api/ventas";
+        try {
+            let response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    usuario: usrNombre,
+                    productos: carrito
+                })
+            });
 
-    try {
-        let response = await fetch(url, {
-            method: "PUT",
-            body: carrito   // IMPORTANTE: sin JSON, sin headers
-        });
+            let result = await response.json();
 
-        let result = await response.json();
+            if (response.ok) {
+                console.log(result.message);
+                alert(result.message);
+                vaciarCarrito();
+            } else {
+                console.log(result.message);
+            }
 
-        if (response.ok) {//si la peticion es exitosa, pasa hacer esto
-            console.log(result.message);
-            alert(result.message);
-            // Vaciamos el form y el listado 
-            vaciarCarrito();
-        } else {
-            mostrarError(result.message);
+        } catch (error) {
+            console.error("Error al finalizar compra: ", error);
+            alert("Error al procesar la solicitud");
         }
-
-    } catch (error) {
-        console.error("Error al finalizar compra: ", error);
-        alert("Error al procesar la solicitud");
     }
 }
+   
+
 
 /*==============================
 ================================*/
