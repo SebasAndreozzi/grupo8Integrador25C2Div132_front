@@ -28,6 +28,31 @@ async function obtenerProductos(){
 
 }
 
+async function obtenerProductoPorId(id){
+    try {
+        // Hago el fetch a la url personalizada
+        let response = await fetch(`http://localhost:3000/api/productos/cliente/${id}`);
+
+        // Proceso los datos que me devuelve el servidor
+        let datos = await response.json();
+        
+
+        if (!response.ok) {
+            mostrarError(datos.message || "No se pudo obtener el producto");
+            return;
+        }
+        // Extraigo el producto que devuelve payload
+        let producto = datos.payload; // Apuntamos a la respuesta, vamos a payload que trae el array con el objeto y extraemos el primer y unico elemento
+        
+        // Le pasamos el producto a una funcion que lo renderice en la pantalla
+        return producto[0];
+
+    } catch (error) {
+        console.error("Error: ", error);
+    }
+
+}
+
 function mostrarProductos(array)
 {
     let htmlProducto ="";
@@ -40,7 +65,7 @@ function mostrarProductos(array)
                 <p>$${producto.precio}</p>
                 <div class="card-button">
                     <input type="number" class="contador-unidades" min="1" id="cantidad${producto.id}" value="1">
-                    <button class="button" data-producto='${JSON.stringify(producto)}' onclick="agregarACarrito(this.dataset.producto, document.getElementById('cantidad${producto.id}').value)">Agregar</button>
+                    <button class="button" onclick="agregarACarrito(${producto.id}, document.getElementById('cantidad${producto.id}').value)">Agregar</button>
                 </div>
             </div>
         `;
@@ -117,29 +142,30 @@ imgCarrito.addEventListener("click", () =>{
     mostrarCarrito();
 })
 
-function mostrarCarrito(){
+async function mostrarCarrito(){
 
     let htmlCarrito =`
         <h1>Carrito</h1>
         <hr class="separador">
         <div class="contenedor-carrito">`;
 
-    carrito.forEach((producto)=> {
+    for (const producto of carrito) {
 
+        let prod = await obtenerProductoPorId(producto.id);
+        
         htmlCarrito += `
             <div class= "card-producto">
-                <img src="${producto.img}" alt="${producto.nombre}">
-                <h3>${producto.nombre}</h3>
-                <p>$${Number(producto.precio)*Number(producto.cantidad)}</p>
-                <button class="button" onclick="restarUnidad(${producto.id})">-</button>
-                <input type="number" min="0" class="contador-unidades" id="carritoCantidad${producto.id}" value="${producto.cantidad}" disabled>
-                <button class="button" onclick="agregarUnidad(${producto.id})">+</button>
+                <img src="${prod.img}" alt="${prod.nombre}">
+                <h3>${prod.nombre}</h3>
+                <p>$${Number(prod.precio)*Number(producto.cantidad)}</p>
+                <button class="button" onclick="restarUnidad(${prod.id})">-</button>
+                <input type="number" min="0" class="contador-unidades" id="carritoCantidad${prod.id}" value="${producto.cantidad}" disabled>
+                <button class="button" onclick="agregarUnidad(${prod.id})">+</button>
             </div>
         `;
- 
-    });
+    };
 
-    htmlCarrito += `</div><p class="total">TOTAL: $${calcularTotal()}</p><button class=button onclick="finalizarCompra()">Finalizar compra</button>`
+    htmlCarrito += `</div><p class="total">TOTAL: $${await calcularTotal()}</p><button class=button onclick="finalizarCompra()">Finalizar compra</button>`
 
     if(carrito.length > 0){
         catalogoCarrito.innerHTML = htmlCarrito;
@@ -172,20 +198,23 @@ function actualizarCantidadCarrito(){
 }
 
 function agregarACarrito(producto, cant){
-    agregarProd = JSON.parse(producto);
-    agregarProd.cantidad = cant;
+    let agregarProd = {
+        id : producto,
+        cantidad: cant
+    }
 
     if(carrito.length > 0){
+        let cantActualizada = false;
         for(let item of carrito){
             if(item.id === agregarProd.id){
                 item.cantidad = Number(item.cantidad) + Number(cant);
-                break;
+                cantActualizada = true; 
+                break
             }
-            else{
-                carrito.push(agregarProd);
-                break;
-            }
-        } 
+        }
+        if(!cantActualizada){
+            carrito.push(agregarProd);
+        }
 
     }else{
         carrito.push(agregarProd);
@@ -237,20 +266,48 @@ function vaciarCarrito(){
     catalogoCarrito.innerHTML = "";
 }
 
-function calcularTotal(){
+async function calcularTotal(){
     total = 0;
 
-    carrito.forEach((item) => {
-        total += Number(item.precio) * Number(item.cantidad);
-    })
+    for(let item of carrito){
+        let producto = await obtenerProductoPorId(item.id);
+        total += Number(producto.precio) * Number(item.cantidad);
+    }
 
-    console.log(total);
     return total;
 }
-
+/*
 function finalizarCompra(){
     if(confirm("Desea confirmar la compra")){
         calcularTotal();
+    }
+}*/
+
+async function finalizarCompra(event) {
+    event.preventDefault();
+
+    let url= "http://localhost:3000/api/ventas";
+
+    try {
+        let response = await fetch(url, {
+            method: "PUT",
+            body: carrito   // IMPORTANTE: sin JSON, sin headers
+        });
+
+        let result = await response.json();
+
+        if (response.ok) {//si la peticion es exitosa, pasa hacer esto
+            console.log(result.message);
+            alert(result.message);
+            // Vaciamos el form y el listado 
+            vaciarCarrito();
+        } else {
+            mostrarError(result.message);
+        }
+
+    } catch (error) {
+        console.error("Error al finalizar compra: ", error);
+        alert("Error al procesar la solicitud");
     }
 }
 
