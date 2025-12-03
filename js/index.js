@@ -7,6 +7,20 @@ if(JSON.parse(sessionStorage.getItem("carrito"))){
 }
 let usrNombre = obtenerNombre();
 
+/*=======================
+Funciones de obtención
+=========================*/
+
+function obtenerNombre(){
+    if(sessionStorage.getItem("nombre")){
+        return sessionStorage.getItem("nombre");
+    }
+    else{
+      window.location.href = "./login.html";  
+    }
+
+}
+
 async function obtenerProductos(){
     try {
         let response = await fetch(`http://localhost:3000/api/productos/cliente`);
@@ -115,16 +129,26 @@ function filtrarPorTipo(array, tipo){
     contenedorProductos.innerHTML = htmlProducto;
 }
 
-/*=======================
-Funciones de obtención
-=========================*/
+async function obtenerVentaProductoPorId(id){
+    try {
+        // Hago el fetch a la url personalizada
+        let response = await fetch(`http://localhost:3000/api/ventaproducto/${id}`);
 
-function obtenerNombre(){
-    if(sessionStorage.getItem("nombre")){
-        return sessionStorage.getItem("nombre");
-    }
-    else{
-      window.location.href = "./login.html";  
+        // Proceso los datos que me devuelve el servidor
+        let datos = await response.json();
+        
+        if (!response.ok) {
+            mostrarError(datos.message || "No se pudo obtener el producto");
+            return;
+        }
+        // Extraigo el producto que devuelve payload
+        let productos = datos.payload; // Apuntamos a la respuesta, vamos a payload que trae el array con el objeto y extraemos el primer y unico elemento
+        
+        // Le pasamos el producto a una funcion que lo renderice en la pantalla
+        return(productos);
+
+    } catch (error) {
+        console.error("Error: ", error);
     }
 
 }
@@ -275,29 +299,6 @@ async function calcularTotal(){
     return total;
 }
 
-async function obtenerVentaProductoPorId(id){
-    try {
-        // Hago el fetch a la url personalizada
-        let response = await fetch(`http://localhost:3000/api/ventaproducto/${id}`);
-
-        // Proceso los datos que me devuelve el servidor
-        let datos = await response.json();
-        
-        if (!response.ok) {
-            mostrarError(datos.message || "No se pudo obtener el producto");
-            return;
-        }
-        // Extraigo el producto que devuelve payload
-        let productos = datos.payload; // Apuntamos a la respuesta, vamos a payload que trae el array con el objeto y extraemos el primer y unico elemento
-        
-        // Le pasamos el producto a una funcion que lo renderice en la pantalla
-        return(productos);
-
-    } catch (error) {
-        console.error("Error: ", error);
-    }
-
-}
 async function finalizarCompra() {
     if (confirm("¿Desea confirmar la compra?")) {
         let url = "http://localhost:3000/api/ventas";
@@ -330,26 +331,6 @@ async function finalizarCompra() {
             alert("Error al procesar la solicitud");
         }
     }
-}
-
-async function obtenerVentaProductoPorId(id){
-    try {
-        let response = await fetch(`http://localhost:3000/api/ventaproducto/${id}`);
-
-        let datos = await response.json();
-        
-        if (!response.ok) {
-            mostrarError(datos.message || "No se pudo obtener el producto");
-            return;
-        }
-        let productos = datos.payload;
-
-        return(productos);
-
-    } catch (error) {
-        console.error("Error: ", error);
-    }
-
 }
 
 async function imprimirTicket(id){
