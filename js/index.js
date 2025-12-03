@@ -120,8 +120,8 @@ Funciones de obtención y eliminación del nombre de usuario
 ===========================================================*/
 
 function obtenerNombre(){
-    if(localStorage.getItem("nombre")){
-        return localStorage.getItem("nombre");
+    if(sessionStorage.getItem("nombre")){
+        return sessionStorage.getItem("nombre");
     }
     else{
       window.location.href = "./login.html";  

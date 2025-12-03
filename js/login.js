@@ -7,7 +7,7 @@ usrNameForm.addEventListener("submit", event => {
     let usrName = document.getElementById("usrName");
 
     if (validarNombre(usrName.value)){
-        localStorage.setItem("nombre", usrName.value);
+        sessionStorage.setItem("nombre", usrName.value);
 
         window.location.href = "./index.html";
     }
