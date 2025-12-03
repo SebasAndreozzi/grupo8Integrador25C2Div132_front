@@ -320,10 +320,10 @@ async function finalizarCompra() {
             let result = await response.json();
 
             if (response.ok){
+                let ventaId = result.payload;
+                await imprimirTicket(ventaId);
                 alert(result.message);
                 vaciarCarrito();
-                let ventaId = result.payload;
-                imprimirTicket(ventaId);
             } else {
                 console.log(result.message);
             }
