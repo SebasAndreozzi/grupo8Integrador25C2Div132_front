@@ -31,21 +31,20 @@ async function obtenerProductos(){
 async function obtenerProductoPorId(id){
     try {
         // Hago el fetch a la url personalizada
-        let response = await fetch(`http://localhost:3000/api/productos/cliente/${id}`);
+        let response = await fetch(`http://localhost:3000/api/ventaproducto/${id}`);
 
         // Proceso los datos que me devuelve el servidor
         let datos = await response.json();
         
-
         if (!response.ok) {
             mostrarError(datos.message || "No se pudo obtener el producto");
             return;
         }
         // Extraigo el producto que devuelve payload
-        let producto = datos.payload; // Apuntamos a la respuesta, vamos a payload que trae el array con el objeto y extraemos el primer y unico elemento
+        let productos = datos.payload; // Apuntamos a la respuesta, vamos a payload que trae el array con el objeto y extraemos el primer y unico elemento
         
         // Le pasamos el producto a una funcion que lo renderice en la pantalla
-        return producto[0];
+        return(productos);
 
     } catch (error) {
         console.error("Error: ", error);
@@ -296,10 +295,11 @@ async function finalizarCompra() {
 
             let result = await response.json();
 
-            if (response.ok) {
-                console.log(result.message);
+            if (response.ok){
                 alert(result.message);
                 vaciarCarrito();
+                let ventaId = result.payload;
+                imprimirTicket(ventaId);
             } else {
                 console.log(result.message);
             }
@@ -311,6 +311,48 @@ async function finalizarCompra() {
     }
 }
    
+async function imprimirTicket(id){
+
+    let ticket = await obtenerVentaProductoPorId(id)
+
+    let productosTicket = [];
+
+    for(let item of ticket){
+        let producto = await obtenerProductoPorId(item.productos_id);
+        productosTicket.push(producto);
+    }
+    
+    const { jsPDF } = window.jspdf;
+
+    const doc = new jsPDF();
+
+    let y = 20;
+
+    doc.setFontSize(18);
+
+    doc.text("Ticketmon de compra: ", 20, y);
+
+    y += 15;
+
+    doc.setFontSize(12);
+
+    for(let i = 0; i < productosTicket.length; i++){
+
+        doc.text(`${productosTicket[i].nombre} - $${ticket[i].precio}`, 30, y);
+
+        y += 10;
+    }
+
+    const precioTotal = await calcularTotal();
+
+    y += 5;
+
+    doc.setFontSize(14);
+
+    doc.text(`Total : $${precioTotal}`, 20, y);
+
+    doc.save("ticket.pdf");
+}
 
 
 /*==============================
@@ -321,3 +363,5 @@ function init() {
 }
 
 init();
+
+
