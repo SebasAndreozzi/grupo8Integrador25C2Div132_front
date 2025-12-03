@@ -1,24 +1,25 @@
 let contenedorProductos = document.getElementById("contenedor-productos");
 let catalogoCarrito = document.getElementById("catalogo-carrito")
 let carrito = [];
+if(JSON.parse(sessionStorage.getItem("carrito"))){
+    carrito = JSON.parse(sessionStorage.getItem("carrito"));
+    actualizarCantidadCarrito();
+}
 let usrNombre = obtenerNombre();
 
 async function obtenerProductos(){
     try {
-        // Hago el fetch a la url personalizada
         let response = await fetch(`http://localhost:3000/api/productos/cliente`);
 
-        // Proceso los datos que me devuelve el servidor
         let datos = await response.json();
 
         if (!response.ok) {
             mostrarError(datos.message || "No se pudo obtener el producto");
             return;
         }
-        // Extraigo el producto que devuelve payload
-        let productos = datos.payload; // Apuntamos a la respuesta, vamos a payload que trae el array con el objeto y extraemos el primer y unico elemento
-
-        // Le pasamos el producto a una funcion que lo renderice en la pantalla
+ 
+        let productos = datos.payload;
+        
         mostrarProductos(productos);
         iniciarFiltros(productos);
 
@@ -30,10 +31,8 @@ async function obtenerProductos(){
 
 async function obtenerProductoPorId(id){
     try {
-        // Hago el fetch a la url personalizada
         let response = await fetch(`http://localhost:3000/api/productos/cliente/${id}`);
 
-        // Proceso los datos que me devuelve el servidor
         let datos = await response.json();
         
 
@@ -41,10 +40,9 @@ async function obtenerProductoPorId(id){
             mostrarError(datos.message || "No se pudo obtener el producto");
             return;
         }
-        // Extraigo el producto que devuelve payload
-        let producto = datos.payload; // Apuntamos a la respuesta, vamos a payload que trae el array con el objeto y extraemos el primer y unico elemento
         
-        // Le pasamos el producto a una funcion que lo renderice en la pantalla
+        let producto = datos.payload; 
+        
         return producto[0];
 
     } catch (error) {
@@ -106,7 +104,7 @@ function filtrarPorTipo(array, tipo){
                     <h3>${producto.nombre}</h3>
                     <p>$${producto.precio}</p>
                     <input type="number" class="contador-unidades" min="1" id="cantidad${producto.id}" value="1">
-                    <button class="button" data-producto='${JSON.stringify(producto)}' onclick="agregarACarrito(this.dataset.producto, document.getElementById('cantidad${producto.id}').value)">Agregar</button>
+                    <button class="button" onclick="agregarACarrito(${producto.id}, document.getElementById('cantidad${producto.id}').value)">Agregar</button>
                 </div>
             `;
         }
@@ -115,9 +113,9 @@ function filtrarPorTipo(array, tipo){
     contenedorProductos.innerHTML = htmlProducto;
 }
 
-/*=========================================================
-Funciones de obtención y eliminación del nombre de usuario
-===========================================================*/
+/*=======================
+Funciones de obtención
+=========================*/
 
 function obtenerNombre(){
     if(sessionStorage.getItem("nombre")){
@@ -128,10 +126,6 @@ function obtenerNombre(){
     }
 
 }
-/*
-window.addEventListener("beforeunload", () =>{
-    localStorage.removeItem("nombre");
-})*/
 
 /*====================
 Funcines de carrito
@@ -174,14 +168,7 @@ async function mostrarCarrito(){
 }
 
 function actualizarCarrito(id, cant){
-    for(let item in carrito){
-        if(item.id == id){
-            item.cantidad = cant;
-            break;
-        }
-    }
-    actualizarCantidadCarrito()
-    mostrarCarrito();
+    sessionStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
 function actualizarCantidadCarrito(){
@@ -199,6 +186,11 @@ function actualizarCantidadCarrito(){
 }
 
 function agregarACarrito(producto, cant){
+
+    if(cant < 1){
+        return
+    }
+
     let agregarProd = {
         id : producto,
         cantidad: cant
@@ -223,6 +215,7 @@ function agregarACarrito(producto, cant){
     }
 
     actualizarCantidadCarrito();
+    actualizarCarrito();
     
     if(catalogoCarrito.innerHTML.trim() != ''){
         mostrarCarrito();
@@ -255,6 +248,7 @@ function restarUnidad(prodId){
     if(carrito.length === 0){
         vaciarCarrito();
     }else{
+        actualizarCantidadCarrito();
         actualizarCarrito();
         mostrarCarrito();
     }
@@ -264,6 +258,7 @@ function restarUnidad(prodId){
 function vaciarCarrito(){
     carrito = [];
     catalogoCarrito.innerHTML = "";
+    sessionStorage.removeItem("carrito");
     actualizarCantidadCarrito();
 }
 
@@ -296,9 +291,10 @@ async function finalizarCompra() {
 
             let result = await response.json();
 
-            if (response.ok) {
-                console.log(result.message);
+            if (response.ok){
                 alert(result.message);
+                let ventaId = result.payload;
+                await imprimirTicket(ventaId);
                 vaciarCarrito();
             } else {
                 console.log(result.message);
@@ -310,8 +306,69 @@ async function finalizarCompra() {
         }
     }
 }
-   
 
+async function obtenerVentaProductoPorId(id){
+    try {
+        let response = await fetch(`http://localhost:3000/api/ventaproducto/${id}`);
+
+        let datos = await response.json();
+        
+        if (!response.ok) {
+            mostrarError(datos.message || "No se pudo obtener el producto");
+            return;
+        }
+        let productos = datos.payload;
+
+        return(productos);
+
+    } catch (error) {
+        console.error("Error: ", error);
+    }
+
+}
+
+async function imprimirTicket(id){
+
+    let ticket = await obtenerVentaProductoPorId(id)
+
+    let productosTicket = [];
+
+    for(let item of ticket){
+        let producto = await obtenerProductoPorId(item.productos_id);
+        productosTicket.push(producto);
+    }
+    
+    const { jsPDF } = window.jspdf;
+
+    const doc = new jsPDF();
+
+    let y = 20;
+
+    doc.setFontSize(18);
+
+    doc.text("Ticketmon de compra: ", 20, y);
+
+    y += 15;
+
+    doc.setFontSize(12);
+
+    for(let i = 0; i < productosTicket.length; i++){
+
+        doc.text(`${productosTicket[i].nombre} - $${ticket[i].precio}`, 30, y);
+
+        y += 10;
+    }
+
+    let montoFinal = await calcularTotal();
+
+    y += 5;
+
+    doc.setFontSize(14);
+
+    doc.text(`Total: $${montoFinal}`, 20, y);
+
+    doc.save("ticket.pdf");
+}
 
 /*==============================
 ================================*/
