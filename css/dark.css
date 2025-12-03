@@ -1,0 +1,69 @@
+:root{
+    --azul_muy_oscuro: rgb(4, 4, 27);
+    --azul_oscuro: rgb(20, 20, 56);
+    --amarillo: rgb(209, 209, 43);
+}
+
+/* Botón de modo */
+#modo{
+    width: 30px;
+    font-size: 20px;
+    margin: auto;
+    cursor: pointer;
+}
+
+/* ======= MODO OSCURO ======= */
+.dark{
+    background-color: var(--azul_muy_oscuro);
+}
+
+/* Navbar y Header dentro del modo oscuro */
+.dark nav,
+.dark header {
+    background-color: var(--azul_oscuro);
+}
+
+/* Títulos y textos importantes */
+.dark h1, 
+.dark .integrantes,
+.dark span {
+    color: var(--amarillo);
+}
+
+/* Main */
+.dark main{
+    background-color: var(--azul_oscuro);
+}
+
+/* Botón para cambiar modo */
+.dark #modo{
+    color: orange;
+}
+
+/* Tarjeta de producto */
+.dark .card-producto{
+    background-color: var(--azul_muy_oscuro);
+    border: 1px solid var(--amarillo);
+}
+
+/* Precios y textos dentro de la card */
+.dark .card-producto p {
+    color: var(--amarillo);
+}
+
+/* Input de cantidad */
+.dark .card-producto input{
+    background-color: var(--amarillo);
+    color: black;
+}
+
+/* Contador de unidades */
+.dark .contador-unidades {
+    color: #000000;
+}
+
+/* Botón “Agregar” */
+.dark .button{
+    background-color: #0a69cf;
+    color: white;
+}

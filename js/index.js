@@ -360,7 +360,7 @@ async function imprimirTicket(id){
 
     for(let i = 0; i < productosTicket.length; i++){
 
-        doc.text(`${productosTicket[i].nombre} - $${ticket[i].precio}`, 30, y);
+        doc.text(`${productosTicket[i].nombre} - $${ticket[i].precio} x ${ticket[i].cantidad}`, 30, y);
 
         y += 10;
     }
@@ -376,6 +376,20 @@ async function imprimirTicket(id){
     doc.save("ticket.pdf");
 }
 
+function irSessionAdmin(){
+    let confirmar = confirm("Ingresará a la sesion administrador, ¿Desea continuar?");
+    if(confirmar){
+        window.location.href = "http://localhost:3000/login";
+    } else {
+        console.log("El usuario canceló la redirección");
+    }
+}
+
+let modo= document.getElementById("modo");
+let body= document.body;
+modo.addEventListener("click", ()=>{
+    body.classList.toggle("dark");
+});
 /*==============================
 ================================*/
 

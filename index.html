@@ -7,6 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="icon" href="img/favicon.ico">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dark.css">
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
 
 </head>
@@ -16,7 +17,11 @@
             <span>Sebastián Andreozzi</span>
             <span>Cesar Pumacayo</span>
         </div>
+
         <nav>
+            <div class="modo" id="modo">
+                <i>dark/light👆</i>
+            </div>
             <div class="nav-img">
                 <img src="img/name_logo.png" alt="Tiendamon" class="logo" id="logo">
                 <div class="carrito">
@@ -25,6 +30,7 @@
                 </div>
             </div>
             
+            <button id="botonAdmin" class="button" onclick="irSessionAdmin()">Iniciar Admin</button>
             <ul class="categorias">
                 <li type="submit" id="filtro-sellado">Sellado</li>
                 <li type="submit" id="filtro-accesorio">Accesorio</li>
