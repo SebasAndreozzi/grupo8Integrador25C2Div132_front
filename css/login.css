@@ -54,6 +54,10 @@ main{
     flex-direction: column;
     margin: 0;
     padding: 20px 20px;
+
+    background-color: var(--blanco);
+    border: 2px solid var(--azul);
+    border-radius: 5px;
 }
 
 #usrNameForm input{
@@ -75,17 +79,17 @@ main{
     cursor: pointer;
 }
 
-#usrNameForm{
-    background-color: var(--blanco);
-    border: 2px solid var(--azul);
-    border-radius: 5px;
-}
-
 @media screen and (max-width: 350px) {
     body{
         font-size: small;
     }
+    main{
+        padding-top: 93px;
+    }
     .logo{
         width: 250px;
+    }
+    #usrNameForm input, #usrNameForm button{
+        font-size: smaller;
     }
 }
