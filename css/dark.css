@@ -1,15 +1,8 @@
 :root{
     --azul_muy_oscuro: rgb(4, 4, 27);
     --azul_oscuro: rgb(20, 20, 56);
-    --amarillo: rgb(209, 209, 43);
-}
-
-/* Botón de modo */
-#modo{
-    width: 30px;
-    font-size: 20px;
-    margin: auto;
-    cursor: pointer;
+    --gris: #94A5B5;
+    --blanco: #fff;
 }
 
 /* ======= MODO OSCURO ======= */
@@ -24,10 +17,17 @@
 }
 
 /* Títulos y textos importantes */
-.dark h1, 
-.dark .integrantes,
-.dark span {
-    color: var(--amarillo);
+
+.dark .categorias li:hover{
+    color: var(--gris);
+}
+
+.dark #modo{
+    background-image: url(../img/heavyball.png);
+}
+
+.dark #modo:hover{
+    background-image: url(../img/pokeball.png);
 }
 
 /* Main */
@@ -35,26 +35,36 @@
     background-color: var(--azul_oscuro);
 }
 
-/* Botón para cambiar modo */
-.dark #modo{
-    color: orange;
+.dark h1{
+    color: var(--blanco);
 }
+
+.dark .separador{
+    border: 1px solid var(--gris);
+}
+
 
 /* Tarjeta de producto */
 .dark .card-producto{
     background-color: var(--azul_muy_oscuro);
-    border: 1px solid var(--amarillo);
+    border: 1px solid var(--gris);
 }
 
 /* Precios y textos dentro de la card */
+
+.dark .card-producto h3 {
+    color: var(--blanco);
+}
+
 .dark .card-producto p {
-    color: var(--amarillo);
+    color: var(--gris);
 }
 
 /* Input de cantidad */
 .dark .card-producto input{
-    background-color: var(--amarillo);
-    color: black;
+    background-color: var(--azul_muy_oscuro);
+    color: var(--blanco);
+    border-color: var(--gris);
 }
 
 /* Contador de unidades */
@@ -66,4 +76,8 @@
 .dark .button{
     background-color: #0a69cf;
     color: white;
+}
+
+.dark .total{
+    color: var(--gris);
 }

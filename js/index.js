@@ -1,10 +1,12 @@
 let contenedorProductos = document.getElementById("contenedor-productos");
 let catalogoCarrito = document.getElementById("catalogo-carrito")
 let carrito = [];
+
 if(JSON.parse(sessionStorage.getItem("carrito"))){
     carrito = JSON.parse(sessionStorage.getItem("carrito"));
     actualizarCantidadCarrito();
 }
+
 let usrNombre = obtenerNombre();
 
 /*=======================
@@ -385,11 +387,19 @@ function irSessionAdmin(){
     }
 }
 
-let modo= document.getElementById("modo");
+
+let docModo= document.getElementById("modo");
 let body= document.body;
-modo.addEventListener("click", ()=>{
-    body.classList.toggle("dark");
+docModo.addEventListener("click", () =>{
+    if(JSON.parse(localStorage.getItem("modoOscuro"))){
+        localStorage.removeItem("modoOscuro");
+        body.classList.remove("dark");
+    }else{
+        localStorage.setItem("modoOscuro", true);
+        body.classList.add("dark");
+    }
 });
+
 /*==============================
 ================================*/
 
@@ -398,3 +408,6 @@ function init() {
 }
 
 init();
+if(JSON.parse(localStorage.getItem("modoOscuro"))){
+    body.classList.add("dark");
+}
