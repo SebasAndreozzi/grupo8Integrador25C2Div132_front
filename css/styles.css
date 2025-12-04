@@ -280,6 +280,12 @@ main h1 {
     font-size: 16px;
 }
 
+#usrNameForm{
+    background-color: var(--blanco);
+    border: 2px solid var(--azul);
+    border-radius: 5px;
+}
+
 @media screen and (max-width: 730px) {
     .integrantes{
         font-size: x-small;
